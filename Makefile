@@ -8,4 +8,7 @@ migrateup:
 		migrate -path db/migration -database "postgres://root:secret@localhost:5432/plipkart?sslmode=disable" -verbose up
 migratedown:
 		migrate -path db/migration -database "postgres://root:secret@localhost:5432/plipkart?sslmode=disable" -verbose down
-.PHONY: migratecreate createdb dropdb migrateup migratedown
+mockdbgen:
+	mockgen -package mockdb -destination db/mock/store.go github.com/MeganViga/Plipkart/db/sqlc Store
+
+.PHONY: migratecreate createdb dropdb migrateup migratedown mockdbgen

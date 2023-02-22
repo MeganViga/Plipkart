@@ -21,6 +21,20 @@ type userSignupRequestParams struct{
 
 
 }
+type userResponse struct {
+	Username          string    `json:"username"`
+	PasswordChangedAt time.Time `json:"password_changed_at"`
+	CreatedAt         time.Time `json:"created_at"`
+}
+
+func newUserResponse(user db.UserDatum) userResponse {
+	return userResponse{
+		Username:          user.Username,
+		PasswordChangedAt: user.ModifiedAt,
+		CreatedAt:         user.CreatedAt,
+	}
+}
+
 func (s *Server)userSignup(ctx *gin.Context){
 	var request userSignupRequestParams
 	if err := ctx.ShouldBindJSON(&request); err != nil{
@@ -56,6 +70,13 @@ type userLoginRequestParams struct{
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
+
+type loginUserResponse struct {
+	AccessToken           string       `json:"access_token"`
+	AccessTokenExpiresAt  time.Time    `json:"access_token_expires_at"`
+	User                  userResponse `json:"user"`
+}
+
 func (s *Server)userLogin(ctx *gin.Context){
 	var request userLoginRequestParams
 	if err := ctx.ShouldBindJSON(&request); err != nil{
@@ -75,6 +96,15 @@ func (s *Server)userLogin(ctx *gin.Context){
 		ctx.JSON(http.StatusInternalServerError, s.ShowError(err))
 		return
 	}
-
-	ctx.JSON(http.StatusOK, user)
+	accessToken, accessPayload, err := s.tokenMaker.CreateToken(user.Username,s.config.AccessTokenDuration)
+	if err != nil{
+		ctx.JSON(http.StatusInternalServerError, s.ShowError(err))
+		return
+	}
+	rsp := loginUserResponse{
+		AccessToken: accessToken,
+		AccessTokenExpiresAt: accessPayload.ExpiredAt,
+		User: newUserResponse(user),
+	}
+	ctx.JSON(http.StatusOK, rsp)
 }

@@ -20,6 +20,8 @@ type colorAndQuantity struct{
 
 
 
+
+
 func createListProductsJson(products []db.GetProductsRow)map[int64]listProducts{
 	for _, item := range products{
 		listProductsResponse[item.ID] = listProducts{}

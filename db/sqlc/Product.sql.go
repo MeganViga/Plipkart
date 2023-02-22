@@ -90,7 +90,9 @@ type GetProductByColorRow struct {
 	Quantity    int32  `json:"quantity"`
 	Price       int64  `json:"price"`
 }
-
+func (g GetProductByColorRow)Get()(int64,string,string,int32,int64){
+	return g.ID,g.ProductName,g.Color,g.Quantity,g.Price
+}
 func (q *Queries) GetProductByColor(ctx context.Context, arg GetProductByColorParams) ([]GetProductByColorRow, error) {
 	rows, err := q.db.QueryContext(ctx, getProductByColor, arg.ProductID, arg.Color)
 	if err != nil {
@@ -208,7 +210,9 @@ type GetProductsRow struct {
 	Quantity    int32  `json:"quantity"`
 	Price       int64  `json:"price"`
 }
-
+func (g GetProductsRow)Get()(int64,string,string,int32,int64){
+	return g.ID,g.ProductName,g.Color,g.Quantity,g.Price
+}
 func (q *Queries) GetProducts(ctx context.Context) ([]GetProductsRow, error) {
 	rows, err := q.db.QueryContext(ctx, getProducts)
 	if err != nil {
