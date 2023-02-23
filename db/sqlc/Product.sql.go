@@ -211,7 +211,11 @@ type GetProductsRow struct {
 	Price       int64  `json:"price"`
 }
 func (g GetProductsRow)Get()(int64,string,string,int32,int64){
-	return g.ID,g.ProductName,g.Color,g.Quantity,g.Price
+	return g.ID,
+	g.ProductName,
+	g.Color,
+	g.Quantity,
+	g.Price
 }
 func (q *Queries) GetProducts(ctx context.Context) ([]GetProductsRow, error) {
 	rows, err := q.db.QueryContext(ctx, getProducts)
