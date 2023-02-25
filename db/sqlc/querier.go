@@ -19,6 +19,7 @@ type Querier interface {
 	GetProductByName(ctx context.Context, productName string) ([]GetProductByNameRow, error)
 	GetProducts(ctx context.Context) ([]GetProductsRow, error)
 	GetUserByName(ctx context.Context, username string) (UserDatum, error)
+	ListUserAddresses(ctx context.Context, userID int64) ([]UserAddress, error)
 }
 
 var _ Querier = (*Queries)(nil)

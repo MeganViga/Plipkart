@@ -33,6 +33,4 @@ func main(){
 		log.Fatal(err)
 	}
 	server.StartServer(config.HTTPServerAddress)
-
-
 }

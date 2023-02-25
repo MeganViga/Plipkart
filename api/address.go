@@ -61,3 +61,22 @@ func (s *Server)deleteAddress(ctx *gin.Context){
 	}
 	ctx.JSON(http.StatusOK,address)
 }
+type listAddressRequestParams struct{
+	User_id int64 `uri:"id" binding:"required"`
+}
+func (s *Server)listAddress(ctx *gin.Context){
+	var request listAddressRequestParams
+	fmt.Println(request)
+	if err := ctx.ShouldBindUri(&request); err != nil{
+		ctx.JSON(http.StatusBadRequest,s.ShowError(err))
+		return
+	}
+
+	addresses, err := s.store.ListUserAddresses(ctx,request.User_id)
+	fmt.Println(addresses)
+	if err != nil{
+		ctx.JSON(http.StatusInternalServerError,s.ShowError(err))
+		return
+	}
+	ctx.JSON(http.StatusOK,addresses)
+}

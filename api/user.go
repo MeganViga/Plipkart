@@ -23,14 +23,12 @@ type userSignupRequestParams struct{
 }
 type userResponse struct {
 	Username          string    `json:"username"`
-	PasswordChangedAt time.Time `json:"password_changed_at"`
 	CreatedAt         time.Time `json:"created_at"`
 }
 
 func newUserResponse(user db.UserDatum) userResponse {
 	return userResponse{
 		Username:          user.Username,
-		PasswordChangedAt: user.ModifiedAt,
 		CreatedAt:         user.CreatedAt,
 	}
 }

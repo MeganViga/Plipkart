@@ -16,3 +16,8 @@ DELETE
 FROM user_address
 WHERE id = $1 RETURNING *;
 
+-- name: ListUserAddresses :many
+SELECT * 
+FROM user_address
+WHERE user_id = $1;
+

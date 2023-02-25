@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -86,4 +87,46 @@ func (q *Queries) DeleteUserAddress(ctx context.Context, id int64) (UserAddress,
 		&i.ModifiedAt,
 	)
 	return i, err
+}
+
+const listUserAddresses = `-- name: ListUserAddresses :many
+SELECT id, user_id, address_line1, address_line2, city, postal_code, country, phone_number, created_at, modified_at 
+FROM user_address
+WHERE user_id = $1
+`
+
+func (q *Queries) ListUserAddresses(ctx context.Context, userID int64) ([]UserAddress, error) {
+	rows, err := q.db.QueryContext(ctx, listUserAddresses, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []UserAddress
+	for rows.Next() {
+		var i UserAddress
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.AddressLine1,
+			&i.AddressLine2,
+			&i.City,
+			&i.PostalCode,
+			&i.Country,
+			&i.PhoneNumber,
+			&i.CreatedAt,
+			&i.ModifiedAt,
+		); err != nil {
+			return nil, err
+		}
+		fmt.Println("I",i)
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	fmt.Println("Items",items)
+	return items, nil
 }

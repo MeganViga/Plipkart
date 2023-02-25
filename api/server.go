@@ -45,6 +45,7 @@ func NewServer(config util.Config,store db.Store)(*Server,error){
 	authRoutes.GET("/deleteaddress/:id",server.deleteAddress)
 	authRoutes.POST("/addproduct",server.addProduct)
 	authRoutes.POST("/addproductcategory",server.addProductCategory)
+	authRoutes.GET("/listaddresses/:id",server.listAddress)
 
 	server.router = router
 	return server, nil
