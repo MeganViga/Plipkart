@@ -2,6 +2,7 @@ package api
 
 import (
 	//"fmt"
+	"errors"
 	"net/http"
 	"time"
 
@@ -32,7 +33,9 @@ func newUserResponse(user db.UserDatum) userResponse {
 		CreatedAt:         user.CreatedAt,
 	}
 }
-
+var (
+	ErrInvalidPassword = errors.New("invalid username or password")
+)
 func (s *Server)userSignup(ctx *gin.Context){
 	var request userSignupRequestParams
 	if err := ctx.ShouldBindJSON(&request); err != nil{
@@ -91,7 +94,7 @@ func (s *Server)userLogin(ctx *gin.Context){
 
 	if err := util.VerifyPassword(request.Password,user.Password); err != nil{
 		print("Error", err)
-		ctx.JSON(http.StatusInternalServerError, s.ShowError(err))
+		ctx.JSON(http.StatusInternalServerError, s.ShowError(ErrInvalidPassword))
 		return
 	}
 	accessToken, accessPayload, err := s.tokenMaker.CreateToken(user.Username,s.config.AccessTokenDuration)
