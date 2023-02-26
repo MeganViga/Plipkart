@@ -66,12 +66,16 @@ func TestListProductApi(t *testing.T){
 	// start test server and send request
 	server := newTestServer(t,store)
 
+	//recorder to record the response
 	recorder := httptest.NewRecorder()
 	url := "/listproducts"
 	request, err := http.NewRequest(http.MethodGet,url,nil)
 	require.NoError(t,err)
 
+	//request and Record response using recorder
 	server.router.ServeHTTP(recorder,request)
+
+	//compare response status with expected status
 	require.Equal(t, http.StatusOK,recorder.Code)
 }
 
