@@ -18,7 +18,7 @@
   
  ## API Examples
  
- * #### Get products API, which doesn't need JWT Token
+ * #### Get products API, which doesn't need JWT Token to give valid response
  
  &nbsp;
  ![alt text](https://github.com/MeganViga/Plipkart/blob/main/GetAPIListProducts.png?raw=True)
@@ -26,7 +26,7 @@
  &nbsp;
  ![alt text](https://github.com/MeganViga/Plipkart/blob/main/LoginAPIwithInvalidPassword.png?raw=True)
  
- * #### Login API, which give JWT Token login is Successfull
+ * #### Login API, which gives JWT Token when login is successfull
  &nbsp;
  ![alt text](https://github.com/MeganViga/Plipkart/blob/main/LoginAPI.png?raw=True)
  
