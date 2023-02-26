@@ -103,6 +103,14 @@ github.com/gin-gonic/gin
 ```
 https://github.com/golang-migrate/migrate
 ```
+- Viper
+```
+go get github.com/spf13/viper
+```
+- JWT Golang
+```
+go get -u github.com/golang-jwt/jwt/v4
+```
 - sqlc
 ```
 https://sqlc.dev
